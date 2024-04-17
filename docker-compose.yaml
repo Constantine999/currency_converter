@@ -1,5 +1,5 @@
 services:
-  currency_convertor:
+  currency_converter:
     build:
       dockerfile: ./Dockerfile
     command:

@@ -5,14 +5,14 @@
 **_Пример запроса:_**
 
 ```html
-/api/rates?from_ticker=RUB&to_ticker=USD&value=1
+api/rates?from_ticker=USD&to_ticker=RUB&value=1
 ```
 
 **_Пример ответа:_**
 
 ```json
 {
-  "result": 0.0106
+  "result": 94.0742
 }
 ```
 
@@ -21,64 +21,60 @@
 ### Реализация:
 
 - приложение работает в асинхронном режиме на FastAPI;
-- данные по курсам валют получаем в **json** формате c сайта **www.cbr.ru** и сохраняем в словарь **current_base_exchange_rates**;
+- курсы валют получаем в **json** формате c сайта **www.cbr.ru** и сохраняем в словарь **current_base_exchange_rates**;
 - ответы на **GET** запросы формируем используя данные из словаря **current_base_exchange_rates**;
-- данные по курсам валют забираем c сайта **www.cbr.ru** в двух случаях:
+- курсы валют забираем c сайта **www.cbr.ru** в двух случаях:
     - при запуске (перезапуске) самого приложения;
-    - если дата полученного **GET** запроса отличается от даты сформированой таблицы с курсом валют.
+    - если дата полученного **GET** запроса отличается от даты сформированой таблицы с курсом валют
 
 ### Состав приложения:
 
->
->**src**  
-> -**main.py**                     отсюда запускаем приложение  
-> -**schemas.py**                  схемы для валидации     
-> -**tests.py**                    файл с тестами         
-> -**exchange_rates.py**            тут создаем словарь c актуальными данным валют   
-**tests**  
-> -**confest.py**                  файл по с настройками тестов  
-> -**test_convert.py**             тестируем эндпоинт  
-> -**test_current_table_cbr.py**   тестируем таблицу
-**requirements.txt**             зависимости    
-**pyproject.toml**               настройки для pytest  
-**Dockerfile**                   настройки докер образа   
-**README.md**                    документация по запуску приложения  
-> **.gitignore**  
-> **.dockerignore**
+```
+
+├── src                               # основная директория приложения
+│   └── tests                         # директория с тестами pytest
+│       ├── conftest.py               # основные настройки fixture
+│       ├── test_converter.py         # тесты роута /api/rates
+│       └── test_currency_base.py     # тесты со словарем с информацией о курсах валют                        
+│   ├── exchange_rates.py             # здесь происходят все методы с валютой
+│   ├── main.py                       # отсюда запускаем приложение
+│   └── schemas.py                    # схемы для валидации
+├── .dockerignore                     # исключаем файлы для docker
+├── .gitignore                        # исключаем файлы для git
+├── docker-compose.yaml               # инструкция по развертыванию приложения 
+├── Dockerfile                        # описание по созданию образа docker
+├── pyproject.toml                    # настройки для pytest
+├── README.md                         # документация по запуску приложения
+├── requirements.txt                  # список зависимостей
+
+```
+
 ---
 
-## Простая установка
+## Установка приложения
 
-_загрузить докер образ:_
-
-```
-docker pull constantine904/currency_convertor
-```
-
-_запустить докер контейнер:_
+**загрузить docker образ:**
 
 ```
-docker compose up currency_convertor
+docker pull constantine904/currency_converter
 ```
 
-_документация:_
+**развернуть приложение:**
 
 ```
-http://127.0.0.1:3333/docs
+docker compose up currency_converter
 ```
 
-_пример запроса:_
+**пример полного запроса:**
 
 ```html
-http://127.0.0.1:3333/api/rates?from_ticker=RUB&to_ticker=USD&value=1
+http://0.0.0.0:3333/api/rates?from_ticker=USD&to_ticker=RUB&value=1
 ```
 
-_пример ответа:_
+**интерактивная документация API:**
 
-```json
-{
-  "result": 0.0106
-}
+```
+http://0.0.0.0:3333/docs
 ```
 
 

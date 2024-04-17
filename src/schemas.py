@@ -28,8 +28,8 @@ class FromAtValueSchema(BaseModel):
     """
     Модель с данными которые получаем на вход
     """
-    from_ticker: TickersEnum = Field(default="RUB", min_length=3, max_length=3, description="Валюта которую конвертируем")
-    to_ticker: TickersEnum = Field(default="USD", min_length=3, max_length=3, description="Валюта на которую конвертируем")
+    from_ticker: TickersEnum = Field(default="USD", description="Валюта которую конвертируем")
+    to_ticker: TickersEnum = Field(default="RUB", description="Валюта на которую конвертируем")
     value: Decimal = Field(default=1, gt=0, max_digits=24, description="Количество валюты которую конвертируем")
 
 

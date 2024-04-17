@@ -10,23 +10,31 @@ from schemas import FromAtValueSchema, ResultSchema
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    При каждом запуске приложения создает словарь с курсами валют
+    При каждом запуске приложения создает словарь с курсом валют.
     """
     await check_date_currency_base()
     yield
 
 
+description = '''
+Приложение **CurrencyConverter** помогает в конвертации валют.
+
+Данные с курсами валют синхронизированы с сайтом [Центрального Банка РФ](http://www.cbr.ru/)
+
+'''
+
 app = FastAPI(
-    title="Aiti Guru - currency converter test",
-    description="## Тестовая работа",
+    title="CurrencyConverter",
+    description=description,
     lifespan=lifespan,
 )
 
 
-@app.get("/api/rates", tags=["CurrencyConvertor", ], response_model=ResultSchema)
-async def convert_currency(data: Annotated[FromAtValueSchema, Depends()]) -> ResultSchema:
+@app.get("/api/rates", tags=["convert currency", ], response_model=ResultSchema)
+async def convert_currency(data: Annotated[FromAtValueSchema, Depends()]):
     """
-    **Эндпоинт на конвертирование валют**
+    **Роут на конвертирование валют.**
+
     """
     await check_date_currency_base()
 

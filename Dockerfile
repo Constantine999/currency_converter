@@ -3,7 +3,7 @@ FROM python:3.12
 
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /currency_convertor
+WORKDIR /currency_converter
 
 COPY requirements.txt requirements.txt
 
