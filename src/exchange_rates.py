@@ -3,17 +3,17 @@ from decimal import Decimal
 
 import requests
 
-current_base_exchange_rate: dict = {}
-date_base_exchange_rate = datetime(1, 1, 1).date()
+current_base_exchange_rates: dict = {}
+date_base_exchange_rates = datetime(1, 1, 1).date()
 
 
-async def create_currency_base_with_site_cbr() -> None:
+def create_currency_base_with_site_cbr() -> None:
     """
-    Формирует таблицу с текущими курсами валют с сайта ЦБР
+    Формирует таблицу с текущими курсами валют
     """
-    global current_base_exchange_rate, date_base_exchange_rate
-    current_base_exchange_rate.clear()
-    current_base_exchange_rate.update({"RUB": Decimal("1.0000")})
+    global current_base_exchange_rates, date_base_exchange_rates
+    current_base_exchange_rates.clear()
+    current_base_exchange_rates.update({"RUB": Decimal("1.0000")})
 
     site_cbr = requests.get(
         "https://www.cbr-xml-daily.ru/daily_json.js",
@@ -25,19 +25,19 @@ async def create_currency_base_with_site_cbr() -> None:
 
     column_with_value = "Value" if timestamp >= date else "Previous"
     for valute in site_cbr.json()["Valute"].values():
-        current_base_exchange_rate[valute["CharCode"]] = (
+        current_base_exchange_rates[valute["CharCode"]] = (
                 Decimal(valute[column_with_value]).quantize(Decimal("1.0000")) / valute["Nominal"])
 
-    date_base_exchange_rate = timestamp
+    date_base_exchange_rates = timestamp
 
 
 async def check_date_currency_base() -> bool:
     """
-    Проверка даты получения последней таблицы с сайта ЦБ
+    Проверка даты получения последней таблицы с курсами валют
     """
     current_date = datetime.now(timezone(timedelta(hours=3))).date()
-    if date_base_exchange_rate != current_date:
-        await create_currency_base_with_site_cbr()
+    if date_base_exchange_rates != current_date:
+        create_currency_base_with_site_cbr()
 
     return True
 
@@ -49,7 +49,7 @@ async def converter(from_ticker: str, to_ticker: str, value: Decimal) -> Decimal
     result = None
     while result is None:
         try:
-            result = (current_base_exchange_rate[from_ticker] * value) / current_base_exchange_rate[to_ticker]
+            result = (current_base_exchange_rates[from_ticker] * value) / current_base_exchange_rates[to_ticker]
         except IndexError:
             pass
 

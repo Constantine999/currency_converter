@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-from decimal import Decimal
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
@@ -11,15 +10,15 @@ from schemas import FromAtValueSchema, ResultSchema
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    При каждом запуске приложения формирует таблицу с курсами валют
+    При каждом запуске приложения создает словарь с курсами валют
     """
     await check_date_currency_base()
     yield
 
 
 app = FastAPI(
-    title="Aiti Guru test",
-    description="Тестовая работа",
+    title="Aiti Guru - currency converter test",
+    description="## Тестовая работа",
     lifespan=lifespan,
 )
 

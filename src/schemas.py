@@ -21,16 +21,16 @@ class Ticker(StrEnum):
         return name
 
 
-TickerEnum = Ticker("TickerEnum", [*tickers])
+TickersEnum = Ticker("TickersEnum", [*tickers])
 
 
 class FromAtValueSchema(BaseModel):
     """
     Модель с данными которые получаем на вход
     """
-    from_ticker: TickerEnum = Field(default="RUB", description="Валюта которую конвертируем")
-    to_ticker: TickerEnum = Field(default="USD", description="Валюта на которую конвертируем")
-    value: Decimal = Field(gt=0, default=1, description="Количество валюты которую конвертируем")
+    from_ticker: TickersEnum = Field(default="RUB", min_length=3, max_length=3, description="Валюта которую конвертируем")
+    to_ticker: TickersEnum = Field(default="USD", min_length=3, max_length=3, description="Валюта на которую конвертируем")
+    value: Decimal = Field(default=1, gt=0, max_digits=24, description="Количество валюты которую конвертируем")
 
 
 class ResultSchema(BaseModel):
