@@ -36,7 +36,7 @@ api/rates?from_ticker=USD&to_ticker=RUB&value=1
 │       ├── conftest.py               # основные настройки fixture
 │       ├── test_converter.py         # тесты роута /api/rates
 │       └── test_currency_base.py     # тесты со словарем с информацией о курсах валют                        
-│   ├── exchange_rates.py             # здесь происходят все методы с валютой
+│   ├── exchange_rates.py             # здесь находятся все методы работы с валютой
 │   ├── main.py                       # отсюда запускаем приложение
 │   └── schemas.py                    # схемы для валидации
 ├── .dockerignore                     # исключаем файлы для docker
