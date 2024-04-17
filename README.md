@@ -2,13 +2,13 @@
 
 ### Написать сервис **"Конвертер валют"** который работает по **REST-API**
 
-**_Пример запроса:_**
+**_пример запроса:_**
 
 ```html
 api/rates?from_ticker=USD&to_ticker=RUB&value=1
 ```
 
-**_Пример ответа:_**
+**_пример ответа:_**
 
 ```json
 {
@@ -53,25 +53,25 @@ api/rates?from_ticker=USD&to_ticker=RUB&value=1
 
 ## Установка приложения
 
-**загрузить docker образ:**
+**_загрузить docker образ:_**
 
 ```
 docker pull constantine904/currency_converter
 ```
 
-**развернуть приложение:**
+**_развернуть приложение:_**
 
 ```
 docker compose up currency_converter
 ```
 
-**пример полного запроса:**
+**_пример полного запроса:_**
 
 ```html
 http://0.0.0.0:3333/api/rates?from_ticker=USD&to_ticker=RUB&value=1
 ```
 
-**интерактивная документация API:**
+**_интерактивная документация API:_**
 
 ```
 http://0.0.0.0:3333/docs
