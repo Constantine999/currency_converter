@@ -4,14 +4,14 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI
 
-from exchange_rate import current_base_exchange_rate, check_date_currency_base
+from exchange_rates import check_date_currency_base, converter
 from schemas import FromAtValueSchema, ResultSchema
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    При каждом запуске приложения формируем таблицу с курсом валют
+    При каждом запуске приложения формирует таблицу с курсами валют
     """
     await check_date_currency_base()
     yield
@@ -22,20 +22,6 @@ app = FastAPI(
     description="Тестовая работа",
     lifespan=lifespan,
 )
-
-
-async def converter(from_ticker: str, to_ticker: str, value: Decimal) -> Decimal:
-    """
-    Конвертирует валюту from_ticker со значением value на валюту at_ticker
-    """
-    result = None
-    while result is None:
-        try:
-            result = (current_base_exchange_rate[from_ticker] * value) / current_base_exchange_rate[to_ticker]
-        except IndexError:
-            pass
-
-    return result.quantize(Decimal("1.0000"))
 
 
 @app.get("/api/rates", tags=["CurrencyConvertor", ], response_model=ResultSchema)
