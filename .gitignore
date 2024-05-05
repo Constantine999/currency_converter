@@ -1,0 +1,6 @@
+venv
+.idea
+__pycache__/
+logs.txt
+logs_test.txt
+
